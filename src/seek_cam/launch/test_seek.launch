@@ -1,0 +1,18 @@
+<launch>
+    <node
+    pkg="seek_cam"
+    type="seek_cam_node.py"
+    name="thermal_cam_node"
+    launch-prefix="x-terminal-emulator -e"
+    />
+    
+    <node
+    pkg="image_view"
+    type="image_view"
+    name="show_liveview"
+    args="compressed"
+    > 
+        <remap from="image" to="/liveview" />
+    </node>
+
+</launch>
