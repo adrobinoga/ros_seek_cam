@@ -2,8 +2,9 @@
 
 import rospy
 import time
+import cStringIO
 import datetime 
-import generic_frykun_api as seek_api
+import pyseek_amarin_api as seek_api
 from genpy.rostime import Time
 from sensor_msgs.msg import CompressedImage
 from threading import Thread
@@ -15,7 +16,7 @@ class CameraHandler:
         self.thermal_pic_seq=0
         self.thermal_pic_tstamp=Time(0,0)
         self.thermal_pic_msg = CompressedImage() # message to publish
-        self.cam_api = seek_api.SeekApi()
+        self.cam_api = seek_api.SeekAPI()
     
     def find_camera(self):
         """
@@ -23,11 +24,11 @@ class CameraHandler:
         """
        
         # get available camera
-        try:
-            self.cam_api.find_cam()
-        except PySeekError:
-            rospy.logerr("No camera found")
-            return False
+        #try:
+        self.cam_api.find_cam()
+        #except :# PySeekError:
+        #    rospy.logerr("No camera found")
+        #    return False
         
         rospy.loginfo("Found camera")
         return True
@@ -35,7 +36,7 @@ class CameraHandler:
         
     def pub_thermalview(self):
         """
-        publishes thermal images
+        publishes thermal images at thermalview
         """
         
         # publisher setup
@@ -48,20 +49,22 @@ class CameraHandler:
         while not rospy.is_shutdown():
 
             # get image
-            self.thermal_pic = self.cam_api.get_image()
+            tmpimg = self.cam_api.get_image()
+            tmpstr = cStringIO.StringIO()
+            tmpimg.save(tmpstr, "PNG")
+            self.thermal_pic =tmpstr.getvalue()
             
-            if : # is empty?
+            if True: # is empty?
                 # set timestamp for picture
                 now = time.time()
                 self.thermal_tstamp = Time(now)
-                image_file = # image data
                    
                 # fill message fields
                 img_msg.header.seq = self.thermal_pic_seq
                 img_msg.header.stamp = self.thermal_pic_tstamp
                 img_msg.header.frame_id = "thermal_cam"
                 
-                img_msg.format = 'jpeg'
+                img_msg.format = 'png'
                 img_msg.data = self.thermal_pic
                 # end fill
                 
@@ -78,7 +81,7 @@ def main():
     
     cam_hand = CameraHandler()
     while not cam_hand.find_camera():
-        time.sleep(3)
+        time.sleep(2)
         
     # start thermal image publisher
     thread_thermalview = Thread(target=cam_hand.pub_thermalview)

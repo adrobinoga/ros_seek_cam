@@ -1,4 +1,6 @@
+import sys
 import pyseek
+
 
 class SeekAPI():
 
@@ -9,5 +11,5 @@ class SeekAPI():
         self.seek.open() 
         
     def get_image(self):
-        self.seek.get_array()
+        return self.seek.get_image()
     

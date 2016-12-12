@@ -9,10 +9,10 @@
     <node
     pkg="image_view"
     type="image_view"
-    name="show_liveview"
+    name="show_thermalview"
     args="compressed"
     > 
-        <remap from="image" to="/liveview" />
+        <remap from="image" to="/thermalview" />
     </node>
 
 </launch>
