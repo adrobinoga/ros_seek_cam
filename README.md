@@ -19,6 +19,14 @@ Then set up the ROS environment
 
 http://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment
 
+### Install pyseek
+The library to use the camera must be downloaded
+
+$ git clone git@github.com:adrobinoga/pyseek.git
+
+In order to use this lib you must append the path to this lib to PYTHONPATH, you may do this appending the next line at the end of your .bashrc file
+
+export PYTHONPATH="${PYTHONPATH}:/path/of/your/download/pyseek"
 
 ### Download and build seek_cam package
 
@@ -33,6 +41,7 @@ then source setup.bash
 $ source devel/setup.bash
 
 this last step must be executed from every terminal before using this package
+
 
 ## Run
 Now from the same terminal where we source the setup.bash
@@ -56,13 +65,16 @@ $ rostopic echo /thermalview/compressed
 
 The node publishes png images in /thermalview/compressed topic.
 
-## Examples
+## FAQs
+
+1. Why a separate repo for pyseek?
+The the tridge fork for pyseek just works for PILLOW versions older than 2.9.0 , the current fork, used for this project supports newer versions.
 
 ## Todo
 
-- dead pixels
-- define temperature scale
-
+- fix dead pixels
+- get absolute temperature
+- consider using zougloub/libseek instead of pyseek
 ## Author 
 Alexander Marin Drobinoga alexanderm2230@gmail.com
 
