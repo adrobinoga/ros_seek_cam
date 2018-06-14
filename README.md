@@ -12,7 +12,12 @@ The Thermal Seek camera is a thermal camera, very cheap in the reign of thermal 
 
 ## Installation
 
-### ROS
+### Requirements
+
+- pyusb
+- scipy
+
+#### ROS
 
 A working installation of ROS must be installed, before building and running this package.
 
