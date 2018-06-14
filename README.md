@@ -78,7 +78,7 @@ Where the vendor id and the product id, can be obtained with the `dmesg` command
 
 Then restart the udev service:
 ```bash
-sudo service udev restart
+$ sudo service udev restart
 ```
 
 ## Run
