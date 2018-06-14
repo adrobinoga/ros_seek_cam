@@ -22,12 +22,21 @@
 
 import rospy
 import time
+import sys
+from scipy import ndimage
 import cStringIO
 import datetime 
 import pyseek_amarin_api as seek_api
 from genpy.rostime import Time
 from sensor_msgs.msg import CompressedImage
 from threading import Thread
+
+
+# default rotation angle, the "0" position is considered to be the position
+# at which the usb port is at 90 degrees
+# if the usb port is rotated 90 degrees counterclockwise from this position,
+# a value of 90 is needed.
+DEFAULT_ANGLE = 90
 
 class CameraHandler:
 
@@ -37,6 +46,17 @@ class CameraHandler:
         self.thermal_pic_tstamp=Time(0,0)
         self.thermal_pic_msg = CompressedImage() # message to publish
         self.cam_api = seek_api.SeekAPI()
+        
+        # parses image rotation argument
+        ros_argv = rospy.myargv()
+        self.rot_angle = float(ros_argv[1][ros_argv[1].find('=')+1:])
+        try:
+            self.rot_angle = float(ros_argv[1][ros_argv[1].find('=')+1:])
+            rospy.loginfo("Using a rotation angle of {0}".format(self.rot_angle))
+        except:
+            rospy.loginfo("Using default rotation angle")
+            self.rot_angle = DEFAULT_ANGLE
+        
     
     def find_camera(self):
         """
@@ -70,6 +90,9 @@ class CameraHandler:
 
             # get image
             tmpimg = self.cam_api.get_image()
+            # rotates image, a offset of 90 is used to set the "0" position
+            # the rotation is negative to compensate the camera's rotation
+            tmpimg = tmpimg.rotate(-self.rot_angle+90)
             tmpstr = cStringIO.StringIO()
             tmpimg.save(tmpstr, "PNG")
             self.thermal_pic =tmpstr.getvalue()

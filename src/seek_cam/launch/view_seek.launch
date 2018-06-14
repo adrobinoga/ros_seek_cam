@@ -18,11 +18,15 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 <launch>
+    <arg
+        name="angle" default="90"
+    />
     <node
     pkg="seek_cam"
     type="seek_cam_node.py"
     name="thermal_cam_node"
     launch-prefix="x-terminal-emulator -e"
+    args="angle=$(arg angle)"
     />
     
     <node
