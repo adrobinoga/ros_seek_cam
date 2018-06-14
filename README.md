@@ -115,7 +115,24 @@ $ rosrun image_view image_view image:=/thermalview _image_transport:=compressed
 
 ## API Reference
 
+### Topic
 The node publishes png images in /thermalview/compressed topic.
+
+### Change Image Rotation
+To change rotation angle of the published image, you may change the angle argument, when using roslaunch:
+
+```bash
+$ roslaunch seek_cam view_seek.launch angle:=<camera angle>
+```
+When no value is given, the default value set in launch file is used.
+
+Where the `camera angle` is set according to the position of the usb port of the camera,the "0" position is considered to be the position at which the usb port is at 90 degrees if the usb port is rotated 90 degrees counterclockwise from this position, a value of 90 is needed.
+
+The `camera angle` parameter can also be passed with a rosrun instruction:
+```bash
+$ rosrun seek_cam seek_cam_node.py angle=90
+```
+When no value is given the default value set in seek_cam_node.py is used.
 
 ## FAQs
 
