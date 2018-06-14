@@ -66,7 +66,7 @@ To access the camera you need to create a new file `/etc/udev/rules.d/50-usb-per
 With the line:
 
 ```
-SUBSYSTEM=="usb", ATTR{idVendor}=="<vendor id>", ATTR{<product id>}=="0010", MODE="0666"
+SUBSYSTEM=="usb", ATTR{idVendor}=="<vendor id>", ATTR{idProduct}=="<product id>", MODE="0666"
 ```
 
 Where the vendor id and the product id, can be obtained with the `dmesg` command after connecting the seek camera.
