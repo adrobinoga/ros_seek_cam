@@ -45,7 +45,7 @@ In order to use this lib you must append the path to this lib to `PYTHONPATH`, y
 export PYTHONPATH="${PYTHONPATH}:/path/of/your/download/pyseek"
 ```
 
-### Download and build seek_cam package
+### Setup seek_cam package
 
 Use the following commands to get and build the ROS node:
 
@@ -59,6 +59,21 @@ Then append the following command to .bashrc file:
 
 ```bash
 source /<full>/<path>/devel/setup.bash
+```
+
+To access the camera you need to create a new file `/etc/udev/rules.d/50-usb-perms.rules`
+
+With the line:
+
+```
+SUBSYSTEM=="usb", ATTR{idVendor}=="<vendor id>", ATTR{<product id>}=="0010", MODE="0666"
+```
+
+Where the vendor id and the product id, can be obtained with the `dmesg` command after connecting the seek camera.
+
+Then restart the udev service:
+```bash
+sudo service udev restart
 ```
 
 ## Run
@@ -81,7 +96,7 @@ First, launch roscore:
 $ roscore
 ```
 
-Then in another terminal, launch main node:
+Then in another terminal, launch the main node:
 
 ```bash
 $ rosrun seek_cam seek_cam_node.py
